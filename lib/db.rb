@@ -1,9 +1,12 @@
 require 'oj'
 
 class Db
-	def initialize(table)
+	def initialize(table, fl = '')
 		@tablename = table
-        @file_location = 'data/' + self.tablename + '.json'
+		unless fl.empty? || fl.nil?
+        @file_location = fl
+		end
+		@file_location = 'data/' + self.tablename + '.json'
 	end
 
     attr_reader :activeid
@@ -32,7 +35,6 @@ class Db
 	end
             
 	def Store(object)
-		file_location = self.file_location
 		if File.exists?(self.file_location)
 			textm = self.Load()
             textm.push(object)
