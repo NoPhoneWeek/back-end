@@ -23,3 +23,7 @@ Thumbs.db
 # Tool generated files #
 ########################
 .vscode
+
+# Project specific files #
+##########################
+data
