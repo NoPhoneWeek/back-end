@@ -1,5 +1,18 @@
 require_relative 'db'
 
+
+=begin
+	An example of the user model.
+{
+    name: 'Joe Bloggs',
+    username: 'jbloggs19',
+    location: { },
+    traveltime: '20 minutes',
+    participating: true
+}
+=end
+	
+
 class UserFuncs
     USERTABLENAME = "USERTABLE"
 	DataB = Db.new(USERTABLENAME)
