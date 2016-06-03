@@ -27,3 +27,8 @@ Thumbs.db
 # Project specific files #
 ##########################
 data
+
+# Vim #
+#######
+.*.swp
+
