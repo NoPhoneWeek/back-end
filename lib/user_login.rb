@@ -22,15 +22,18 @@ class Login
 
     # Check(username, password) returns ther user's ID if the username and the password match, nil otherwise
     def Check(username, password)
+=begin Legacy Code Block
         table = @logindb.Load() # Load the table. We really need something that does this and the next line in one and more efficiently
         usernameID = table.each_index.select {|id| table[id][:username] == username } # should be a length=1 array
-        entry = table[usernameID[0]]    # Get the actual entry
+        # entry = table[usernameID[0]]    # Get the actual entry
+=end
+		entry = @logindb.LoadSingleByVar(:username, username)
         correct = entry[:processed]     # the correct salted + hashed password
         salt = entry[:salt]             # the salt
         input = Digest::SHA256.hexdigest(password+salt) # the processed password the user is using
         
         if input == correct
-            return usernameID[0]        # the user ID
+            return entry[:id]        # the user ID
         end
     end
 end
