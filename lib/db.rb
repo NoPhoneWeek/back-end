@@ -34,16 +34,25 @@ class Db
 		end
 	end
             
-	def Store(object)
+	def Store(object, id = nil)
 		if File.exists?(self.file_location)
 			textm = self.Load()
-			object[:id] = textm.size
+			if id.nil?
+				object[:id] = textm.size
+			else
+				object[:id] = id
+			end
             textm.push(object)
 		else
+			if id.nil?
+				object[:id] = 0
+			else
+				object[:id] = id
+			end
 			textm = Array.new([object])
 		end
 		if(self.Update(textm))
-			self.activeid = textm.size - 1
+			self.activeid = object[:id]
 			return true
 		else
 			raise
