@@ -15,7 +15,7 @@ require "digest"
 
 =end
 
-class Login
+class Auth
     def initialize(logindb)
         @logindb = logindb
     end

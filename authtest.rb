@@ -4,7 +4,7 @@
 
 require "digest"
 require "./lib/db"
-require "./lib/user_login"
+require "./lib/auth"
 require "securerandom"
 
 saltlen = 16 # JUST FOR READABILITY; NEVER USE A SALT LENGTH LESS THAN 512
@@ -28,7 +28,7 @@ pass6 = "IRanOutOfPasswordIdeasHelpMe"
 salt6 = SecureRandom.base64(saltlen)
 
 logindb = Db.new("LOGIN")
-login = Login.new(logindb)
+auth = Auth.new(logindb)
 
 logindb.Update([])  # Reset the table
 logindb.Store({username: "Jimmy",   salt: salt1, processed: Digest::SHA256.hexdigest(pass1+salt1)})
@@ -44,7 +44,7 @@ while true
     puts "Pass:"
     pass = gets.chomp
 
-    id = login.Check(uname, pass)
+    id = auth.Check(uname, pass)
     if id == nil
         p "Login failed!"
     else
