@@ -1,7 +1,8 @@
 =begin
     Yes, I know this is some horrible test code :/
 =end
-
+require 'rubygems'
+require 'bundler/setup'
 require "digest"
 require "./lib/db"
 require "./lib/user_login"
