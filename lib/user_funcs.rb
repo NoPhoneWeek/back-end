@@ -14,34 +14,26 @@ require_relative 'db'
 	
 
 class UserFuncs
-	def initialize(datab = nil)
-		if datab.nil?
-			@datab = Db.new(ENV['nophone_user'])
-		else
-			@datab = datab
-		end
-	end
+    
+  def initialize(datab = nil)
+    if datab.nil? then @datab = Db.new(ENV['nophone_user']) else @datab = datab end
+  end
 	
-	def create(user)
-		if(datab.store(user))
-			testid = datab.activeid
-			return testid
-		end
-	end
+  def create(user)
+    test_id = nil
+    test_id = @datab.active_id if @datab.store(user)
+    test_id
+  end
 	
-	def delete(user)
-		if(datab.Delete(user))
-			return true
-		else
-			return false
-		end
-	end
+  def delete(user)
+    return @datab.delete(user)
+  end
 	
-	def findbyid(userid)
-		return datab.loadbyid(userid)
-	end
+  def find_by_id(userid)
+    return @datab.load_by_id(userid)
+  end
 
-	def loadall
-		return datab.load()
-	end
+  def load_all
+    return @datab.load()
+  end
 end
