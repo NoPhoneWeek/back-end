@@ -14,18 +14,18 @@ class Db
     attr_reader :tablename
     attr_reader :file_location
     
-    def Update(table)
+    def update(table)
         unless File.exists?(self.file_location)
-			self.Create()
+			self.create()
         end
-		m = Oj.dump(table)
+		m = Oj.dump(table, mode: :compat)
         out_file = File.open(self.file_location, "w+")
         out_file.puts(m)
         out_file.close()
         return true
     end
 	
-	def Create()
+	def create()
 		if File.exists?(self.file_location)
 			raise
 		else
@@ -34,9 +34,9 @@ class Db
 		end
 	end
             
-	def Store(object, id = nil)
+	def store(object, id = nil)
 		if File.exists?(self.file_location)
-			textm = self.Load()
+			textm = self.load()
 			if id.nil?
 				object[:id] = textm.size
 			else
@@ -51,7 +51,7 @@ class Db
 			end
 			textm = Array.new([object])
 		end
-		if(self.Update(textm))
+		if(self.update(textm))
 			self.activeid = object[:id]
 			return true
 		else
@@ -59,7 +59,7 @@ class Db
 		end
 	end
 	
-	def Load()
+	def load()
 		if File.exists?(self.file_location)
 			existingdata = File.open(self.file_location, "r")
 			textl = existingdata.read
@@ -73,9 +73,9 @@ class Db
 		end
 	end
     
-	def GetIdByVar(var, value)
+	def getidbyvar(var, value)
 		begin
-			x = self.LoadSingleByVar(var, value)
+			x = self.loadsinglebyvar(var, value)
 			x[:id].nil? raise
 			self.activeid = x[:id]
 			return true
@@ -84,26 +84,26 @@ class Db
 		end
 	end
 	
-    def LoadById(userid)
-        return self.LoadSingleByVar(:id, userid)
+    def loadById(userid)
+        return self.loadsinglebyvar(:id, userid)
     end
 	
-	def LoadByVar(var, value)
-		data = self.Load() #Loads table from DB
+	def loadbyvar(var, value)
+		data = self.load() #loads table from DB
 		results = data.each.select {|entry| entry[var] == value } # Gets all rows that have var match the value passed
 		return results
 	end
 	
-	def LoadSingleByVar(var, value)
-		x = self.LoadByVar(var, value) #Uses the above function and returns the first entry
+	def loadsinglebyvar(var, value)
+		x = self.loadbyvar(var, value) #Uses the above function and returns the first entry
 		return x[0]
 	end
 		
     
-    def Delete(user)
-        data = self.Load()
+    def delete(user)
+        data = self.load()
         data.delete(user)
-        self.Update(data)
+        self.update(data)
         return true
     end
 end
