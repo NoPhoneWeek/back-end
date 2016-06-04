@@ -1,1 +1,2 @@
 gem 'oj'
+gem 'jwt'

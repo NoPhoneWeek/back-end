@@ -7,7 +7,10 @@ require "digest"
 require "./lib/db"
 require "./lib/user_login"
 require "securerandom"
+require "./lib/env"
 
+raise if Env.setup.nil?
+#ENVIRONMENT VALUES
 saltlen = 16 # JUST FOR READABILITY; NEVER USE A SALT LENGTH LESS THAN 512
 
 pass1 = "HelloWorld"
@@ -28,24 +31,24 @@ salt5 = SecureRandom.base64(saltlen)
 pass6 = "IRanOutOfPasswordIdeasHelpMe"
 salt6 = SecureRandom.base64(saltlen)
 
-logindb = Db.new("LOGIN")
+logindb = Db.new(ENV['nophone_login'])
 login = Login.new(logindb)
 
-logindb.Update([])  # Reset the table
-logindb.Store({username: "Jimmy",   salt: salt1, processed: Digest::SHA256.hexdigest(pass1+salt1)})
-logindb.Store({username: "Johnny",  salt: salt2, processed: Digest::SHA256.hexdigest(pass2+salt2)})
-logindb.Store({username: "Somebody",salt: salt3, processed: Digest::SHA256.hexdigest(pass3+salt3)})
-logindb.Store({username: "Make",    salt: salt4, processed: Digest::SHA256.hexdigest(pass4+salt4)})
-logindb.Store({username: "A",       salt: salt5, processed: Digest::SHA256.hexdigest(pass5+salt5)})
-logindb.Store({username: "Sandwich",salt: salt6, processed: Digest::SHA256.hexdigest(pass6+salt6)})
+logindb.update([])  # Reset the table
+logindb.store({username: "Jimmy",   salt: salt1, processed: Digest::SHA256.hexdigest(pass1+salt1)})
+logindb.store({username: "Johnny",  salt: salt2, processed: Digest::SHA256.hexdigest(pass2+salt2)})
+logindb.store({username: "Somebody",salt: salt3, processed: Digest::SHA256.hexdigest(pass3+salt3)})
+logindb.store({username: "Make",    salt: salt4, processed: Digest::SHA256.hexdigest(pass4+salt4)})
+logindb.store({username: "A",       salt: salt5, processed: Digest::SHA256.hexdigest(pass5+salt5)})
+logindb.store({username: "Sandwich",salt: salt6, processed: Digest::SHA256.hexdigest(pass6+salt6)})
 
 while true
     puts "Username:"
-    uname = gets.chomp
+    uname = "Jimmy"
     puts "Pass:"
-    pass = gets.chomp
+    pass = "HelloWorld"
 
-    id = login.Check(uname, pass)
+    id = login.check(uname, pass)
     if id == nil
         p "Login failed!"
     else
