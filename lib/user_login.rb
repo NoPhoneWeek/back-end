@@ -16,29 +16,17 @@ require "digest"
 =end
 
 class Login
-    def initialize(logindb = nil)
-        if logindb.nil?
-			@logindb = Db.new(ENV['nophone_login'])
-		else
-			@logindb = logindb
-		end
-    end
+    
+  def initialize(login_db = nil)
+    if login_db.nil? then @login_db = Db.new(ENV['nophone_login']) else @login_db = login_db end      
+  end
 
     # Check(username, password) returns ther user's ID if the username and the password match, nil otherwise
-    def check(uusername, password)
-=begin Legacy Code Block
-        table = @logindb.Load() # Load the table. We really need something that does this and the next line in one and more efficiently
-        usernameID = table.each_index.select {|id| table[id][:username] == username } # should be a length=1 array
-        # entry = table[usernameID[0]]    # Get the actual entry
-=end
-		entry = @logindb.loadsinglebyvar("username", uusername)
-        correct = entry[:processed]     # the correct salted + hashed password
-        salt = entry[:salt]             # the salt
-        input = Digest::SHA256.hexdigest(password+salt) # the processed password the user is using
-        if input == correct
-			@userlogindetails = entry # store the userlogindetails for use to avoid calling the database again
-            return entry[id]        # the user ID
-        end
+    def check(username, password)
+      @user_login_details = @login_db.load_single_by_var("username", uusername)
+      correct, salt = @user_login_details[:processed], @user_login_details[:salt]      # the correct salted + hashed password and salt
+      input = Digest::SHA256.hexdigest("#{password}#{salt}") # the processed password the user is using
+      return @user_login_details[id] if input == correct
     end
 end
 
