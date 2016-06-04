@@ -55,7 +55,7 @@ class Db
         textl = existing_data.read
         if textl.nil? || textl.empty? then raise else textm = Oj.load(textl) end 
       end
-      textm     
+      textm || {}
 	end
     
 	def get_id_by_var(var, value)
