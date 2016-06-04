@@ -34,15 +34,25 @@ class Db
 		end
 	end
             
-	def Store(object)
+	def Store(object, id = nil)
 		if File.exists?(self.file_location)
 			textm = self.Load()
+			if id.nil?
+				object[:id] = textm.size
+			else
+				object[:id] = id
+			end
             textm.push(object)
 		else
+			if id.nil?
+				object[:id] = 0
+			else
+				object[:id] = id
+			end
 			textm = Array.new([object])
 		end
 		if(self.Update(textm))
-			self.activeid = textm.size - 1
+			self.activeid = object[:id]
 			return true
 		else
 			raise
@@ -63,11 +73,32 @@ class Db
 		end
 	end
     
+	def GetIdByVar(var, value)
+		begin
+			x = self.LoadSingleByVar(var, value)
+			x[:id].nil? raise
+			self.activeid = x[:id]
+			return true
+		rescue => exception
+			return false
+		end
+	end
+	
     def LoadById(userid)
-        self.activeid = userid
-        data = self.Load()
-        return data[userid]
+        return self.LoadSingleByVar(:id, userid)
     end
+	
+	def LoadByVar(var, value)
+		data = self.Load() #Loads table from DB
+		results = data.each.select {|entry| entry[var] == value } # Gets all rows that have var match the value passed
+		return results
+	end
+	
+	def LoadSingleByVar(var, value)
+		x = self.LoadByVar(var, value) #Uses the above function and returns the first entry
+		return x[0]
+	end
+		
     
     def Delete(user)
         data = self.Load()
