@@ -9,7 +9,7 @@ module NoPhoneWeek
         end
 
         # Modules
-        use NoPhoneWeek::Login
+        use NoPhoneWeek::LoginRoutes
 
         run!                                    # Start the server
     end

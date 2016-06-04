@@ -1,4 +1,6 @@
 require 'oj'
+Oj.default_options = {mode: :compat}
+
 
 class Db
     attr_accessor  :active_id
