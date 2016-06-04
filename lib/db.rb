@@ -16,18 +16,18 @@ class Db
     def update(table)
       create() unless File.exists? @file_location
       m = Oj.dump(table, mode: :compat)
-      out_file = File.open(self.file_location, "w+")
+      out_file = File.open(@file_location, "w+")
       out_file.puts(m)
       out_file.close()
       true
     end
 	
 	def create()
-      if File.exists?(self.file_location)
+      if File.exists?(@file_location)
         raise
       else
         Dir.mkdir('data') unless File.exists?('data')
-        File.new(file_location ,"w")
+        File.new(@file_location ,"w")
       end
 	end
             
@@ -51,7 +51,7 @@ class Db
 	def load()
       textm = nil    
       if File.exists?(@file_location)
-        existing_data = File.open(self.file_location, "r")
+        existing_data = File.open(@file_location, "r")
         textl = existing_data.read
         if textl.nil? || textl.empty? then raise else textm = Oj.load(textl) end 
       end
