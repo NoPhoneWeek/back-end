@@ -18,7 +18,7 @@ class Db
         unless File.exists?(self.file_location)
 			self.create()
         end
-		m = Oj.dump(table)
+		m = Oj.dump(table, mode: :compat)
         out_file = File.open(self.file_location, "w+")
         out_file.puts(m)
         out_file.close()
