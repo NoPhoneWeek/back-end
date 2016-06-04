@@ -4,8 +4,8 @@
 require 'rubygems'
 require 'bundler/setup'
 require "digest"
-require "./lib/db"
-require "./lib/user_login"
+require "../lib/db"
+require "../lib/user_login"
 require "securerandom"
 
 saltlen = 16 # JUST FOR READABILITY; NEVER USE A SALT LENGTH LESS THAN 512

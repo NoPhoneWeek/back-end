@@ -1,4 +1,4 @@
-require './lib/user_funcs.rb'
+require '../lib/user_funcs.rb'
 
 UserHelper = UserFuncs.new()
 
