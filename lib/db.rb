@@ -34,8 +34,8 @@ class Db
 	def store(object, id = nil)
       if File.exists? @file_location
         textm = load()
-          if id.nil? then object[:id] = textm.size else object[:id] = id end  
-          textm.push(object)
+        if id.nil? then object[:id] = textm.size else object[:id] = id end  
+        textm.push(object)
       else
         if id.nil? then object[:id] = 0 else object[:id] = id end       
         textm = Array.new([object])
