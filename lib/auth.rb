@@ -12,3 +12,4 @@ class Authorization
     return TokenProvider.issue_token(login.check(username, password))  unless login.check(username, password).nil? 
   end
 end
+

@@ -36,3 +36,4 @@ class UserFuncs
     return @datab.load()
   end
 end
+
