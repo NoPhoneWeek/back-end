@@ -4,8 +4,12 @@ require "oj"
 
 module NoPhoneWeek
     class Login < Sinatra::Base
+        get "/login" do
+            content_type "text/html"
+            return "<form action='/login' method='post'>Name:<br><input type='text' name='username'><br>Pass:<br><input type='text' name='password'><br><br><input type='submit' value='Submit'>"
+        end
+        
         post "/login" do
-            p params
             if params[:username] == "Username" and params[:password] == "Password"
                 Oj::dump({:success => true, :message => "You're logged in!"})
             else
