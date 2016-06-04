@@ -1,6 +1,6 @@
 require "sinatra/base"
 require "oj"
-
+Oj.default_options = {:mode => :compat}
 
 module NoPhoneWeek
     class Login < Sinatra::Base
