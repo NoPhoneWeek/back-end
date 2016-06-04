@@ -34,14 +34,14 @@ class Db
 	def store(object, id = nil)
       if File.exists? @file_location
         textm = load()
-        if id.nil? then object[:id] = textm.size else object[:id] = id end  
+        if id.nil? then object["id"] = textm.size else object["id"] = id end  
         textm.push(object)
       else
-        if id.nil? then object[:id] = 0 else object[:id] = id end       
+        if id.nil? then object["id"] = 0 else object["id"] = id end       
         textm = Array.new([object])
       end
       if update(textm)
-        @active_id = object[:id]
+        @active_id = object["id"]
         return true
       else
         raise
@@ -51,8 +51,7 @@ class Db
 	def load()
       textm = nil    
       if File.exists?(@file_location)
-        existing_data = File.open(@file_location, "r")
-        textl = existing_data.read
+        textl = File.open(@file_location, "r").read
         if textl.nil? || textl.empty? then raise else textm = Oj.load(textl) end 
       end
       textm || {}
@@ -61,33 +60,29 @@ class Db
 	def get_id_by_var(var, value)
       begin
         x = self.load_single_by_var(var, value)
-        raise if x[:id].nil? 
-        @active_id = x[:id]
+        raise if x["id"].nil? 
+        @active_id = x["id"]
         true
-      rescue => exception
+      rescue
         false
       end
 	end
 	
     def load_by_id(userid)
-      load_single_by_var(:id, userid)
+      load_single_by_var("id", userid)
     end
 	
 	def load_by_var(var, value)
-      data = load() #loads table from DB
-      results = data.each.select {|entry| entry[var] == value } # Gets all rows that have var match the value passed
+      load().each.select {|entry| entry[var] == value } # Gets all rows that have var match the value passed
 	end
 	
 	def load_single_by_var(var, value)
-      x = load_by_var(var, value) #Uses the above function and returns the first entry
-      x[0]
+      load_by_var(var, value)[0] #Uses the above function and returns the first entry
 	end
 		
     
     def delete(user)
-      data = load()
-      data.delete(user)
-      update(data)
+      update(load().reject{|x| x == user})
       true
     end
 end
