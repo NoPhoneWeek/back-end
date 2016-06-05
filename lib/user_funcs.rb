@@ -21,7 +21,7 @@ class UserFuncs
 	
   def create(user)
     test_id = nil
-    test_id = @datab.active_id if @datab.store(user)
+    test_id = @datab.store(user)
     test_id
   end
 	

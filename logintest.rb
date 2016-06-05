@@ -44,9 +44,9 @@ logindb.store({username: "Sandwich",salt: salt6, processed: Digest::SHA256.hexdi
 
 while true
     puts "Username:"
-    uname = "Jimmy"
+    uname = gets.chomp
     puts "Pass:"
-    pass = "HelloWorld"
+    pass = gets.chomp
 
     id = login.check(uname, pass)
     if id == nil
