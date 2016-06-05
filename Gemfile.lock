@@ -1,4 +1,5 @@
 GEM
+  remote: https://rubygems.org/
   specs:
     jwt (1.5.4)
     oj (2.15.1)

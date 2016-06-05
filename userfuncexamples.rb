@@ -23,7 +23,7 @@ UserHelper.create(newUser)
 puts "This is just kinda here"
 
 temp0 = UserHelper.load_all()
-temp = UserHelper.find_by_id(4)
+temp = UserHelper.find_by_id(0)
 
 puts temp.to_s
 
