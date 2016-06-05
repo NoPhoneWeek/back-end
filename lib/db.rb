@@ -1,88 +1,40 @@
-require 'oj'
+require_relative 'db_json'
 
 class Db
-    attr_accessor  :active_id
-    attr_reader :table_name
-    attr_reader :file_location
-    
-	def initialize(table, fl = '')
-      @table_name = table
-      @file_location = fl unless fl.empty? || fl.nil?
-      @file_location = "data/#{@table_name}.json"
+	def initialize(table)
+		@table_name = table
+		@file_folder = "data"
+		@file_location = "#{@file_folder}/#{@table_name}.json"
 	end
-
-   
-    
-    def update(table)
-      create() unless File.exists? @file_location
-      m = Oj.dump(table, mode: :compat)
-      out_file = File.open(@file_location, "w+")
-      out_file.puts(m)
-      out_file.close()
-      true
-    end
-	
-	def create()
-      if File.exists?(@file_location)
-        raise
-      else
-        Dir.mkdir('data') unless File.exists?('data')
-        File.new(@file_location ,"w")
-      end
+	prepend DbJson
+	def update(table)
+		write_to_db(table)
 	end
-            
+	def create
+		write_db_file
+	end            
 	def store(object, id = nil)
-      if File.exists? @file_location
-        textm = load()
-        if id.nil? then object["id"] = textm.size else object["id"] = id end  
-        textm.push(object)
-      else
-        if id.nil? then object["id"] = 0 else object["id"] = id end       
-        textm = Array.new([object])
-      end
-      if update(textm)
-        @active_id = object["id"]
-        return true
-      else
-        raise
-      end
-	end
-	
-	def load()
-      textm = nil    
-      if File.exists?(@file_location)
-        textl = File.open(@file_location, "r").read
-        if textl.nil? || textl.empty? then raise else textm = Oj.load(textl) end 
-      end
-      textm || {}
-	end
-    
+		write_row_to_db(object)   
+	end	
+	def load
+		load_all_from_db || {}
+	end  
 	def get_id_by_var(var, value)
-      begin
-        x = self.load_single_by_var(var, value)
-        raise if x["id"].nil? 
-        @active_id = x["id"]
-        true
-      rescue
-        false
-      end
+      load_single_by_var(var, value)["id"]
 	end
-	
-    def load_by_id(userid)
-      load_single_by_var("id", userid)
-    end
-	
+	def load_by_id(id)
+		load_single_by_var("id", id)
+  end
 	def load_by_var(var, value)
-      load().each.select {|entry| entry[var] == value } # Gets all rows that have var match the value passed
+		load_all_from_db_by_var(var, value)
 	end
-	
 	def load_single_by_var(var, value)
-      load_by_var(var, value)[0] #Uses the above function and returns the first entry
+		load_row_from_db_by_var(var, value)
 	end
-		
-    
-    def delete(user)
-      update(load().reject{|x| x == user})
-      true
-    end
+	def delete(object)
+		remove_row_from_db(object)
+	end
+	def delete_by_id(id)
+		remove_row_from_db_by_id(id)
+	end
 end
