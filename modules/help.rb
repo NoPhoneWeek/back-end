@@ -50,6 +50,18 @@ module NoPhoneWeek
               output: "A HTML page of the API docs of the specified module"
             }
           ]
+        }, {
+          name: "Users",
+          routes: ["/users"],
+          description: "User querying module",
+          actions: [
+            {
+              URL: "/users",
+              method: "GET",
+              input: "optional query params",
+              output: "A JSON array of the users that match the params"
+            }
+          ]
         }
       ]
     }
