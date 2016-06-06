@@ -3,7 +3,7 @@ require "sinatra/base"
 require_relative "lib/env"
 raise if Env.setup.nil?
 
-require_relative "modules/login"
+require_relative "modules/help"
 require_relative "modules/auth"
 
 module NoPhoneWeek
@@ -12,8 +12,12 @@ module NoPhoneWeek
             content_type "application/json"     # JSON
         end
 
+        get "/" do
+          redirect "/help"
+        end
+        
         # Modules
-        use NoPhoneWeek::LoginRoutes
+        use NoPhoneWeek::HelpRoutes
         use NoPhoneWeek::AuthRoutes
 
         run!                                    # Start the server
