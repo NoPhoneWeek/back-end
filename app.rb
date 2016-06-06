@@ -5,6 +5,7 @@ raise if Env.setup.nil?
 
 require_relative "modules/help"
 require_relative "modules/auth"
+require_relative "modules/user"
 
 module NoPhoneWeek
     class Main < Sinatra::Base
@@ -19,6 +20,7 @@ module NoPhoneWeek
         # Modules
         use NoPhoneWeek::HelpRoutes
         use NoPhoneWeek::AuthRoutes
+        use NoPhoneWeek::UserRoutes
 
         run!                                    # Start the server
     end
