@@ -13,7 +13,7 @@ module NoPhoneWeek
         end
 
         get "/" do
-          redirect "/help"
+          redirect "/pretty_help"
         end
         
         # Modules
