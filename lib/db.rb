@@ -4,7 +4,7 @@ class Db
 	def initialize(table, fl = '')
 		@tablename = table
 		unless fl.empty? || fl.nil?
-        @file_location = fl
+        		@file_location = fl
 		end
 		@file_location = 'data/' + self.tablename + '.json'
 	end
