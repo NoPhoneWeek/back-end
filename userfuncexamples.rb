@@ -1,5 +1,7 @@
 require './lib/user_funcs.rb'
+require "./lib/env"
 
+raise if Env.setup.nil?
 UserHelper = UserFuncs.new()
 
 newUser = {
@@ -10,19 +12,23 @@ newUser = {
     participating: true
 }
 
-UserHelper.Create(newUser)
-UserHelper.Create(newUser)
-UserHelper.Create(newUser)
-UserHelper.Create(newUser)
-UserHelper.Create(newUser)
-UserHelper.Create(newUser)
-UserHelper.Create(newUser)
+UserHelper.create(newUser)
+UserHelper.create(newUser)
+UserHelper.create(newUser)
+UserHelper.create(newUser)
+UserHelper.create(newUser)
+UserHelper.create(newUser)
+UserHelper.create(newUser)
 
 puts "This is just kinda here"
 
-temp0 = UserHelper.LoadAll()
-temp = UserHelper.FindById(0)
+temp0 = UserHelper.load_all()
+temp = UserHelper.find_by_id(0)
 
-temp2 = UserHelper.Delete(newUser)
+puts temp.to_s
 
-temp3 = UserHelper.LoadAll()
+UserHelper.delete(temp)
+puts "--------------------------------------------------"
+temp1 = UserHelper.load_all()
+
+puts temp1.to_s

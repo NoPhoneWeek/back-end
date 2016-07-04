@@ -1,78 +1,40 @@
-require 'oj'
+require_relative 'db_json'
 
 class Db
-	def initialize(table, fl = '')
-		@tablename = table
-		unless fl.empty? || fl.nil?
-        @file_location = fl
-		end
-		@file_location = 'data/' + self.tablename + '.json'
+	def initialize(table)
+		@table_name = table
+		@file_folder = "data"
+		@file_location = "#{@file_folder}/#{@table_name}.json"
 	end
-
-    attr_reader :activeid
-    attr_writer :activeid
-    attr_reader :tablename
-    attr_reader :file_location
-    
-    def Update(table)
-        unless File.exists?(self.file_location)
-			self.Create()
-        end
-		m = Oj.dump(table)
-        out_file = File.open(self.file_location, "w+")
-        out_file.puts(m)
-        out_file.close()
-        return true
-    end
-	
-	def Create()
-		if File.exists?(self.file_location)
-			raise
-		else
-			Dir.mkdir('data') unless File.exists?('data')
-			File.new(file_location ,"w")
-		end
+	prepend DbJson
+	def update(table)
+		write_to_db(table)
 	end
-            
-	def Store(object)
-		if File.exists?(self.file_location)
-			textm = self.Load()
-            textm.push(object)
-		else
-			textm = Array.new([object])
-		end
-		if(self.Update(textm))
-			self.activeid = textm.size - 1
-			return true
-		else
-			raise
-		end
+	def create
+		write_db_file
+	end            
+	def store(object, id = nil)
+		write_row_to_db(object)   
+	end	
+	def load
+		load_all_from_db || {}
+	end  
+	def get_id_by_var(var, value)
+      load_single_by_var(var, value)["id"]
 	end
-	
-	def Load()
-		if File.exists?(self.file_location)
-			existingdata = File.open(self.file_location, "r")
-			textl = existingdata.read
-            if textl.nil? || textl.empty? then raise
-            else
-                textm = Oj.load(textl)
-                return textm
-            end
-		else
-			return nil
-		end
+	def load_by_id(id)
+		load_single_by_var("id", id)
+  end
+	def load_by_var(var, value)
+		load_all_from_db_by_var(var, value)
 	end
-    
-    def LoadById(userid)
-        self.activeid = userid
-        data = self.Load()
-        return data[userid]
-    end
-    
-    def Delete(user)
-        data = self.Load()
-        data.delete(user)
-        self.Update(data)
-        return true
-    end
+	def load_single_by_var(var, value)
+		load_row_from_db_by_var(var, value)
+	end
+	def delete(object)
+		remove_row_from_db(object)
+	end
+	def delete_by_id(id)
+		remove_row_from_db_by_id(id)
+	end
 end
