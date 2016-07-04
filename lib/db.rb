@@ -1,12 +1,24 @@
+<<<<<<< HEAD
+require_relative 'db_redis'
+=======
 require_relative 'db_json'
+>>>>>>> refs/remotes/origin/dev
 
 class Db
 	def initialize(table)
 		@table_name = table
+<<<<<<< HEAD
+		@redis = Redis.new
+		# @file_folder = "data"
+		# @file_location = "#{@file_folder}/#{@table_name}.json"
+	end
+	prepend DbRedis
+=======
 		@file_folder = "data"
 		@file_location = "#{@file_folder}/#{@table_name}.json"
 	end
 	prepend DbJson
+>>>>>>> refs/remotes/origin/dev
 	def update(table)
 		write_to_db(table)
 	end

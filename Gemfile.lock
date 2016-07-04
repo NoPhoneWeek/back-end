@@ -3,6 +3,7 @@ GEM
   specs:
     jwt (1.5.4)
     oj (2.15.1)
+    redis (3.3.0)
 
 PLATFORMS
   ruby
@@ -10,6 +11,7 @@ PLATFORMS
 DEPENDENCIES
   jwt
   oj
+  redis
 
 BUNDLED WITH
    1.12.5
