@@ -11,6 +11,10 @@ class Db
 		@redis = Redis.new
 		# @file_folder = "data"
 		# @file_location = "#{@file_folder}/#{@table_name}.json"
+      @file_location = "data/#{@table_name}.json"
+    def update(table)
+      create() unless File.exists? @file_location
+      m = Oj.dump(table, mode: :compat)
 	end
 	prepend DbRedis
 =======

@@ -1,4 +1,5 @@
 require "digest"
+require_relative "db"
 
 =begin
 
@@ -24,6 +25,7 @@ class Login
     # Check(username, password) returns ther user's ID if the username and the password match, nil otherwise
     def check(username, password)
       user_login_details = @login_db.load_single_by_var("username", username)
+      return nil if user_login_details.nil?
       correct, salt = user_login_details["processed"], user_login_details["salt"]      # the correct salted + hashed password and salt
       input = Digest::SHA256.hexdigest("#{password}#{salt}") # the processed password the user is using
       return user_login_details["id"] if input == correct

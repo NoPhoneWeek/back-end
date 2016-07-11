@@ -8,8 +8,8 @@ module TokenProvider
       JWT.encode(payload, ENV['nophone_secret'])
     end
     def valid?(token)
-      begin
-        JWT.decode(token, ENV['nophone_secret'])
+        begin
+          JWT.decode(token, ENV['nophone_secret'])
+        end
       end
-    end
- end
+end

@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
-gem 'oj'
 gem 'jwt'
+gem 'oj'
+gem 'sinatra'
 gem 'redis'

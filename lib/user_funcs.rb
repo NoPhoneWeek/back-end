@@ -14,14 +14,13 @@ require_relative 'db'
 	
 
 class UserFuncs
-    
   def initialize(datab = nil)
     if datab.nil? then @datab = Db.new(ENV['nophone_user']) else @datab = datab end
   end
 	
   def create(user)
     test_id = nil
-    test_id = @datab.store(user)
+    test_id = @datab.active_id if @datab.store(user)
     test_id
   end
 	
@@ -37,3 +36,4 @@ class UserFuncs
     return @datab.load()
   end
 end
+

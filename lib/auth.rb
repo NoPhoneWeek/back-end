@@ -1,5 +1,4 @@
-require_relative 'token_provider'
-require_relative 'user_login'
+
 require_relative 'user_funcs'
 
 module Authorisation
